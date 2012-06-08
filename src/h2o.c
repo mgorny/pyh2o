@@ -195,6 +195,13 @@ static PyObject* H2O_get_x(PyObject* _self, void* data)
 {
 	H2O* self = (H2O*) _self;
 
+	if (self->_data.region == H2O_REGION3)
+	{
+		PyErr_SetString(PyExc_ValueError,
+				"x (dryness) is not defined in Region 3");
+		return NULL;
+	}
+
 	return Py_BuildValue("d", h2o_get_x(self->_data));
 }
 
