@@ -8,6 +8,37 @@
 static PyObject* H2O_new(PyTypeObject* type, PyObject* args, PyObject* kwds);
 static int H2O_init(PyObject* _self, PyObject* args, PyObject* kwds);
 
+static PyObject* H2O_get_p(PyObject* _self, void* data);
+static PyObject* H2O_get_T(PyObject* _self, void* data);
+static PyObject* H2O_get_x(PyObject* _self, void* data);
+static PyObject* H2O_get_rho(PyObject* _self, void* data);
+
+static PyObject* H2O_get_v(PyObject* _self, void* data);
+static PyObject* H2O_get_u(PyObject* _self, void* data);
+static PyObject* H2O_get_h(PyObject* _self, void* data);
+static PyObject* H2O_get_s(PyObject* _self, void* data);
+static PyObject* H2O_get_cp(PyObject* _self, void* data);
+static PyObject* H2O_get_cv(PyObject* _self, void* data);
+static PyObject* H2O_get_w(PyObject* _self, void* data);
+
+static PyGetSetDef H2O_properties[] =
+{
+	{"p", H2O_get_p, 0, "Pressure [MPa]", 0},
+	{"T", H2O_get_T, 0, "Temperature [K]", 0},
+	{"x", H2O_get_x, 0, "Dryness (0..1)", 0},
+	{"rho", H2O_get_rho, 0, "Density [kg/m3]", 0},
+
+	{"v", H2O_get_v, 0, "Specific volume [m3/kg]", 0},
+	{"u", H2O_get_u, 0, "Specific internal energy [kJ/kg]", 0},
+	{"h", H2O_get_h, 0, "Specific enthalpy [kJ/kg]", 0},
+	{"s", H2O_get_s, 0, "Specific enthropy [kJ/kgK]", 0},
+	{"cp", H2O_get_cp, 0, "Specific isobaric heat capacity [kJ/kgK]", 0},
+	{"cv", H2O_get_cv, 0, "Specific isochoric heat capacity [kJ/kgK]", 0},
+	{"w", H2O_get_w, 0, "Speed of sound [m/s]", 0},
+
+	{NULL}
+};
+
 PyTypeObject H2O_type =
 {
 	PyObject_HEAD_INIT(NULL)
@@ -40,7 +71,7 @@ PyTypeObject H2O_type =
 	0, /* tp_iternext */
 	0, /* tp_methods */
 	0, /* tp_members */
-	0, /* tp_getset */
+	H2O_properties, /* tp_getset */
 	0, /* tp_base */
 	0, /* tp_dict */
 	0, /* tp_descr_get */
@@ -147,4 +178,81 @@ static int H2O_init(PyObject* _self, PyObject* args, PyObject* kwds)
 	}
 
 	return 0;
+}
+
+static PyObject* H2O_get_p(PyObject* _self, void* data)
+{
+	H2O* self = (H2O*) _self;
+
+	return Py_BuildValue("d", h2o_get_p(self->_data));
+}
+
+static PyObject* H2O_get_T(PyObject* _self, void* data)
+{
+	H2O* self = (H2O*) _self;
+
+	return Py_BuildValue("d", h2o_get_T(self->_data));
+}
+
+static PyObject* H2O_get_x(PyObject* _self, void* data)
+{
+	H2O* self = (H2O*) _self;
+
+	return Py_BuildValue("d", h2o_get_x(self->_data));
+}
+
+static PyObject* H2O_get_rho(PyObject* _self, void* data)
+{
+	H2O* self = (H2O*) _self;
+
+	return Py_BuildValue("d", h2o_get_rho(self->_data));
+}
+
+static PyObject* H2O_get_v(PyObject* _self, void* data)
+{
+	H2O* self = (H2O*) _self;
+
+	return Py_BuildValue("d", h2o_get_v(self->_data));
+}
+
+static PyObject* H2O_get_u(PyObject* _self, void* data)
+{
+	H2O* self = (H2O*) _self;
+
+	return Py_BuildValue("d", h2o_get_u(self->_data));
+}
+
+static PyObject* H2O_get_h(PyObject* _self, void* data)
+{
+	H2O* self = (H2O*) _self;
+
+	return Py_BuildValue("d", h2o_get_h(self->_data));
+}
+
+static PyObject* H2O_get_s(PyObject* _self, void* data)
+{
+	H2O* self = (H2O*) _self;
+
+	return Py_BuildValue("d", h2o_get_s(self->_data));
+}
+
+static PyObject* H2O_get_cp(PyObject* _self, void* data)
+{
+	H2O* self = (H2O*) _self;
+
+	return Py_BuildValue("d", h2o_get_cp(self->_data));
+}
+
+static PyObject* H2O_get_cv(PyObject* _self, void* data)
+{
+	H2O* self = (H2O*) _self;
+
+	return Py_BuildValue("d", h2o_get_cv(self->_data));
+}
+
+static PyObject* H2O_get_w(PyObject* _self, void* data)
+{
+	H2O* self = (H2O*) _self;
+
+	return Py_BuildValue("d", h2o_get_w(self->_data));
 }
