@@ -125,13 +125,10 @@ static int H2O_init(PyObject* _self, PyObject* args, PyObject* kwds)
 	arg_count = is_set(p) + is_set(T) + is_set(h) + is_set(s)
 		+ is_set(x) + is_set(rho);
 
-	if (arg_count == 0) /* non-initialized, the easy case */
-		return 0;
-
 	if (arg_count != 2)
 	{
 		PyErr_Format(PyExc_TypeError,
-				"h2o.H2O() takes either 0 or 2 arguments (%d given)", arg_count);
+				"h2o.H2O() takes exactly 2 arguments (%d given)", arg_count);
 		return -1;
 	}
 
