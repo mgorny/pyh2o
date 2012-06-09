@@ -30,8 +30,11 @@ static PyMethodDef global_methods[] = {
 
 #endif
 
-PyMODINIT_FUNC
-inith2o()
+#ifdef PY3
+PyObject* PyInit_h2o()
+#else
+void inith2o()
+#endif
 {
 	PyObject* m;
 
