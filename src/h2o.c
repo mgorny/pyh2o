@@ -8,6 +8,8 @@
 static PyObject* H2O_new(PyTypeObject* type, PyObject* args, PyObject* kwds);
 static int H2O_init(PyObject* _self, PyObject* args, PyObject* kwds);
 
+static PyObject* H2O_get_region(PyObject* _self, void* data);
+
 static PyObject* H2O_get_p(PyObject* _self, void* data);
 static PyObject* H2O_get_T(PyObject* _self, void* data);
 static PyObject* H2O_get_x(PyObject* _self, void* data);
@@ -23,6 +25,8 @@ static PyObject* H2O_get_w(PyObject* _self, void* data);
 
 static PyGetSetDef H2O_properties[] =
 {
+	{"region", H2O_get_region, 0, "Region (1 to 5)", 0},
+
 	{"p", H2O_get_p, 0, "Pressure [MPa]", 0},
 	{"T", H2O_get_T, 0, "Temperature [K]", 0},
 	{"x", H2O_get_x, 0, "Dryness (0..1)", 0},
@@ -175,6 +179,39 @@ static int H2O_init(PyObject* _self, PyObject* args, PyObject* kwds)
 	}
 
 	return 0;
+}
+
+static PyObject* H2O_get_region(PyObject* _self, void* data)
+{
+	H2O* self = (H2O*) _self;
+
+	int ret;
+
+	switch (self->_data.region)
+	{
+		case H2O_REGION1:
+			ret = 1;
+			break;
+		case H2O_REGION2:
+			ret = 2;
+			break;
+		case H2O_REGION3:
+			ret = 3;
+			break;
+		case H2O_REGION4:
+			ret = 4;
+			break;
+		case H2O_REGION5:
+			ret = 5;
+			break;
+		default:
+			PyErr_Format(PyExc_AssertionError,
+					"Unexpected _data.region: %d",
+					self->_data.region);
+			return NULL;
+	}
+
+	return Py_BuildValue("i", ret);
 }
 
 static PyObject* H2O_get_p(PyObject* _self, void* data)
