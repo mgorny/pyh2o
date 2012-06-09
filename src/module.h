@@ -10,8 +10,10 @@
 
 #include <Python.h>
 
-const char module_name[] = "h2o";
-const char module_doc[]
-	= "IF97 water & steam properties using libh2o";
+static const char module_name[] = "h2o";
+static const char module_doc[] = "IF97 water & steam properties using libh2o";
+
+int types_preinit();
+void types_postinit(PyObject* m);
 
 #endif /*_MODULE_H*/

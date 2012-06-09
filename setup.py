@@ -29,7 +29,8 @@ setup(
 			Extension('h2o',
 				extra_compile_args = cflags,
 				extra_link_args = libs,
-				sources = ['src/h2o.c', 'src/module.c'])
+				sources = ['src/h2o.c', 'src/module.c',
+					'src/module2.c', 'src/module3.c'])
 		],
 
 		classifiers = [
