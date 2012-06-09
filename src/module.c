@@ -36,10 +36,17 @@ inith2o()
 	PyObject* m;
 
 	if (PyType_Ready(&H2O_type) < 0)
+#ifdef PY3
+		return NULL;
+#else
 		return;
+#endif
 
 #ifdef PY3
 	m = PyModule_Create(&h2o_module);
+
+	if (!m)
+		return NULL;
 #else
 	m = Py_InitModule3("h2o", global_methods,
 		"IF97 water & steam properties using libh2o");
