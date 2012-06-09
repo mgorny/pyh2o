@@ -45,8 +45,7 @@ static PyGetSetDef H2O_properties[] =
 
 PyTypeObject H2O_type =
 {
-	PyObject_HEAD_INIT(NULL)
-	0, /* ob_size */
+	PyVarObject_HEAD_INIT(NULL, 0)
 	"h2o.H2O", /* tp_name */
 	sizeof(H2O), /* tp_basicsize */
 	0, /* tp_itemsize */
