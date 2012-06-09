@@ -3,21 +3,31 @@
  * Released under the terms of the 2-clause BSD license
  */
 
-#include <Python.h>
+#include "module.h"
+#include "h2o.h"
 
 #if PY_MAJOR_VERSION >= 3
 #	define PY3
 #endif
 
-#include "h2o.h"
+int types_preinit()
+{
+	return PyType_Ready(&H2O_type) >= 0;
+}
+
+void types_postinit(PyObject* m)
+{
+	Py_INCREF(&H2O_type);
+	PyModule_AddObject(m, "H2O", (PyObject*) &H2O_type);
+}
 
 #ifdef PY3
 
 static PyModuleDef h2o_module = {
 	PyModuleDef_HEAD_INIT, /* m_base */
 
-	"h2o", /* m_name */
-	"IF97 water & steam properties using libh2o", /* m_doc */
+	module_name, /* m_name */
+	module_doc, /* m_doc */
 	-1, /* m_size */
 	NULL /* m_methods */
 };
@@ -38,7 +48,7 @@ void inith2o()
 {
 	PyObject* m;
 
-	if (PyType_Ready(&H2O_type) < 0)
+	if (!types_preinit())
 #ifdef PY3
 		return NULL;
 #else
@@ -51,12 +61,10 @@ void inith2o()
 	if (!m)
 		return NULL;
 #else
-	m = Py_InitModule3("h2o", global_methods,
-		"IF97 water & steam properties using libh2o");
+	m = Py_InitModule3(module_name, global_methods, module_doc);
 #endif
 
-	Py_INCREF(&H2O_type);
-	PyModule_AddObject(m, "H2O", (PyObject*) &H2O_type);
+	types_postinit(m);
 
 #ifdef PY3
 	return m;
