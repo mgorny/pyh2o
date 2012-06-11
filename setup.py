@@ -16,7 +16,7 @@ def pkgconfig_get(*args):
 				% args[-1])
 	return output.decode('utf8').strip().split()
 
-cflags, libs = [pkgconfig_get(x, 'libh2o') for x in ('--cflags', '--libs')]
+cflags, libs = [pkgconfig_get(x, 'libh2o >= 0.2.1') for x in ('--cflags', '--libs')]
 
 setup(
 		name = 'pyh2o',
