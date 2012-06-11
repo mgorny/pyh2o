@@ -86,7 +86,7 @@ PyTypeObject H2O_type =
 };
 
 static char* new_keywords[] = {
-	"p", "T", "h", "s", "x", "rho"
+	"p", "T", "h", "s", "x", "rho", NULL
 };
 
 static PyObject* H2O_new(PyTypeObject* type, PyObject* args, PyObject* kwds)
