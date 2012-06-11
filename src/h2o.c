@@ -23,6 +23,8 @@ static PyObject* H2O_get_cp(PyObject* _self, void* data);
 static PyObject* H2O_get_cv(PyObject* _self, void* data);
 static PyObject* H2O_get_w(PyObject* _self, void* data);
 
+static PyObject* H2O_expand(PyObject* _self, PyObject* args, PyObject* kwargs);
+
 static PyGetSetDef H2O_properties[] =
 {
 	{"region", H2O_get_region, 0, "Region (1 to 5)", 0},
@@ -39,6 +41,13 @@ static PyGetSetDef H2O_properties[] =
 	{"cp", H2O_get_cp, 0, "Specific isobaric heat capacity [kJ/kgK]", 0},
 	{"cv", H2O_get_cv, 0, "Specific isochoric heat capacity [kJ/kgK]", 0},
 	{"w", H2O_get_w, 0, "Speed of sound [m/s]", 0},
+
+	{NULL}
+};
+
+static PyMethodDef H2O_methods[] =
+{
+	{"expand", (PyCFunction) H2O_expand, METH_VARARGS | METH_KEYWORDS, "Perform expansion calculation to a given pressure [MPa}, with optional efficiency (0..1)"},
 
 	{NULL}
 };
@@ -72,7 +81,7 @@ PyTypeObject H2O_type =
 	0, /* tp_weaklistoffset */
 	0, /* tp_iter */
 	0, /* tp_iternext */
-	0, /* tp_methods */
+	H2O_methods, /* tp_methods */
 	0, /* tp_members */
 	H2O_properties, /* tp_getset */
 	0, /* tp_base */
@@ -295,4 +304,32 @@ static PyObject* H2O_get_w(PyObject* _self, void* data)
 	H2O* self = (H2O*) _self;
 
 	return Py_BuildValue("d", h2o_get_w(self->_data));
+}
+
+static char* expand_keywords[] = {
+	"p", "eta", NULL
+};
+
+static PyObject* H2O_expand(PyObject* _self, PyObject* args, PyObject* kwargs)
+{
+	H2O* self = (H2O*) _self;
+	H2O* ret;
+
+	double pout, eta = unset;
+
+	if (!PyArg_ParseTupleAndKeywords(args, kwargs, "d|d", expand_keywords,
+			&pout, &eta))
+		return NULL;
+
+	ret = PyObject_New(H2O, &H2O_type);
+
+	if (ret)
+	{
+		if (is_set(eta))
+			ret->_data = h2o_expand_real(self->_data, pout, eta);
+		else
+			ret->_data = h2o_expand(self->_data, pout);
+	}
+
+	return (PyObject*) ret;
 }
