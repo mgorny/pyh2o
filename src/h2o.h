@@ -19,6 +19,6 @@ typedef struct
 	h2o_t _data;
 } H2O;
 
-PyTypeObject H2O_type;
+extern PyTypeObject H2O_type;
 
 #endif /*_H2O_H*/
