@@ -5,12 +5,17 @@
 
 from distutils.core import setup, Extension
 
+import os
+import shlex
 import subprocess
 import sys
 
 
+PKG_CONFIG = os.environ.get('PKG_CONFIG', 'pkg-config')
+
+
 def pkgconfig_get(*args):
-    subp = subprocess.Popen(('pkg-config',) + args,
+    subp = subprocess.Popen(shlex.split(PKG_CONFIG) + list(args),
                             stdout=subprocess.PIPE)
     output = subp.communicate()[0]
     if subp.returncode != 0:
