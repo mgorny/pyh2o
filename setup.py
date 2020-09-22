@@ -33,7 +33,7 @@ setup(
     version='0',
     author='Michał Górny',
     author_email='mgorny@gentoo.org',
-    url='https://bitbucket.org/mgorny/pyh2o',
+    url='https://github.com/mgorny/pyh2o/',
     ext_modules=[
         Extension('h2o',
                   extra_compile_args=cflags,
