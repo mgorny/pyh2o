@@ -30,7 +30,7 @@ cflags, libs = [pkgconfig_get(x, 'libh2o >= 0.2.1')
 
 setup(
     name='pyh2o',
-    version='0',
+    version='1',
     author='Michał Górny',
     author_email='mgorny@gentoo.org',
     url='https://github.com/mgorny/pyh2o/',
